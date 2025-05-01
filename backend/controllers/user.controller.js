@@ -13,7 +13,7 @@ const signup = async (req,res)=>{
     }
     const hashedPassword =await bcrypt.hash(password, 10);
     const newUser = await User.create({...req.body , password:hashedPassword})
-    return res.status(201).json({msg:"user account created" , newUser})
+    return res.status(201).json({msg:"user account created"})
     } catch (error) {
         return res.status(500).json({msg:"server error. please try after some time" , error})
         

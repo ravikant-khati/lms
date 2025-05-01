@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ClipLoader } from "react-spinners";
 import {
   Card,
   CardContent,
@@ -10,37 +11,77 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+} from "../features/apis/authAPI";
+import {toast} from 'sonner'
 
 export function Login() {
   const [signupValues, setSignupValues] = useState({
-    username:"",
-    email:'',
-    password:''
+    username: "",
+    email: "",
+    password: "",
   });
-  const [loginValues , setLoginValues] = useState({
-    email:"",
-    password:""
-  })
-  const handleSignupFieldsChange=(e)=>{
+  const [loginValues, setLoginValues] = useState({
+    email: "",
+    password: "",
+  });
+  const [
+    registerUser,
+    {
+      data: registerData,
+      error: registerError,
+      isLoading: registerIsLoading,
+      isSuccess: registerIsSuccess,
+    },
+  ] = useRegisterUserMutation();
+  useEffect(() => {
+    if(registerError){
+      toast.error('signup failed')
+    }
+    if(registerIsSuccess){
+      toast.success('signup success')
+    }
+  }, [registerIsSuccess , registerError]);
+  const [
+    loginUser,
+    {
+      data: loginData,
+      error: loginError,
+      isLoading: loginIsLoading,
+      isSuccess: loginIsSuccess,
+    },
+  ] = useLoginUserMutation();
+  useEffect(() => {
+    if(loginError){
+      toast.error('login failed')
+    }
+    if(loginIsSuccess){
+      toast.success('login success')
+    }
+  }, [loginIsSuccess , loginError]);
+  const handleSignupFieldsChange = (e) => {
     setSignupValues({
-      ...signupValues , [e.target.name]:e.target.value
-    })
-    console.log(e.target.value);
-  }
-  const handleLoginFieldsChange=(e)=>{
+      ...signupValues,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleLoginFieldsChange = (e) => {
     setLoginValues({
-      ...loginValues , [e.target.name]:e.target.value
-    })
-  }
-  const signup = ()=>{
-    console.log(signupValues);
-  }
-  const login = ()=>{
-    console.log(loginValues);
-  }
+      ...loginValues,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const signup = async () => {
+    await registerUser(signupValues);
+  };
+  const login = async () => {
+    await loginUser(loginValues);
+  };
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mt-20">
       <Tabs defaultValue="signup" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="signup">Signup</TabsTrigger>
@@ -69,7 +110,7 @@ export function Login() {
                 <Label htmlFor="email">Email</Label>
                 <Input
                   type="email"
-                  name='email'
+                  name="email"
                   value={signupValues.email}
                   onChange={handleSignupFieldsChange}
                   id="email"
@@ -79,11 +120,24 @@ export function Login() {
               </div>
               <div className="space-y-1">
                 <Label htmlFor="username">Password</Label>
-                <Input type="password" id="username" name='password' value={signupValues.password} onChange={handleSignupFieldsChange} required />
+                <Input
+                  type="password"
+                  id="username"
+                  name="password"
+                  value={signupValues.password}
+                  onChange={handleSignupFieldsChange}
+                  required
+                />
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={signup}>Signup</Button>
+              <Button onClick={signup}>
+                {registerIsLoading ? (
+                  <ClipLoader size={20} color="white" />
+                ) : (
+                  "Signup"
+                )}
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -108,15 +162,24 @@ export function Login() {
               </div>
               <div className="space-y-1">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password"
-                name="password"
-                value={loginValues.password}
-                onChange={handleLoginFieldsChange}
-                type="password" required />
+                <Input
+                  id="password"
+                  name="password"
+                  value={loginValues.password}
+                  onChange={handleLoginFieldsChange}
+                  type="password"
+                  required
+                />
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={login}>Login</Button>
+              <Button onClick={login}>
+                {loginIsLoading ? (
+                  <ClipLoader size={20} color="white" />
+                ) : (
+                  "Login"
+                )}
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
