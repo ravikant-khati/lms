@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "./layout/MainLayout";
 import Courses from "./pages/students/Courses";
 import MyLearning from "./pages/students/MyLearning";
+import Profile from "./pages/students/Profile";
 
 const appRouter = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const appRouter = createBrowserRouter([
       {
         path:"my-learning",
         element:(<MyLearning />)
+      },
+      {
+        path:"profile",
+        element:(<Profile />)
       }
     ],
   },

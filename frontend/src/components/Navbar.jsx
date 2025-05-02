@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Menu, School } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,12 +24,25 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogoutUserMutation } from "../features/apis/authAPI";
+import { toast } from "sonner";
 
 const Navbar = () => {
+  const[logoutUser,{ data, error, isLoading, isSuccess, isError }] = useLogoutUserMutation()
+  const navigate = useNavigate()
+  useEffect(()=>{
+    if(isSuccess){
+      toast.success(data.msg)
+      navigate('/login')
+    }
+    if(isError){
+      toast.error("there is an error")
+    }
+  },[isSuccess , isError])
   let user = true;
   return (
-    <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-gray-800 fixed top-0 left-0 right-0">
+    <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-gray-800 sticky top-0 left-0 right-0">
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center h-full">
         <div className="flex items-center gap">
           <School size={"30"} />
@@ -49,8 +62,8 @@ const Navbar = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem><Link to='my-learning'>My Learning</Link></DropdownMenuItem>
-                  <DropdownMenuItem>Edit Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Log Out</DropdownMenuItem>
+                  <DropdownMenuItem><Link to={"profile"}>Edit profile</Link></DropdownMenuItem>
+                  <DropdownMenuItem><button onClick={logoutUser}>Log Out</button></DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
