@@ -13,7 +13,7 @@ const HeroSection = () => {
           Discover, Learn, and Upskill with our wide range of courses
         </p>
 
-        <form className="flex items-center bg-white dark:bg-gray-800 rounded-full shadow-lg overflow-hidden max-w-xl mx-auto mb-6">
+         <form className="flex items-center bg-white dark:bg-gray-800 rounded-full shadow-lg overflow-hidden max-w-xl mx-auto mb-6">
           <Input
             type="text"
             placeholder="Search Courses"
@@ -25,7 +25,7 @@ const HeroSection = () => {
           >
             Search
           </Button>
-        </form>
+        </form> 
         <Button className="bg-white dark:bg-gray-800 text-blue-600 rounded-full hover:bg-gray-200">
           Explore Courses
         </Button>

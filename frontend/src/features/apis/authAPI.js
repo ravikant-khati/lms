@@ -26,6 +26,7 @@ const authAPIs = createApi({
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+          // console.log(result)
           dispatch(userLoggedIn({ user: result.data.user }));
         } catch (error) {
           console.log(error);
@@ -40,6 +41,7 @@ const authAPIs = createApi({
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+          // console.log("quey result" , result)
           dispatch(userLoggedIn({ user: result.data.user }));
         } catch (error) {
           console.log(error);
@@ -57,7 +59,16 @@ const authAPIs = createApi({
       query:()=>({
         url:"logout",
         method:"GET"
-      })
+      }),
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          // console.log("quey result" , result)
+          dispatch(userLoggedOut());
+        } catch (error) {
+          console.log(error);
+        }
+      }
     })
   }),
 });

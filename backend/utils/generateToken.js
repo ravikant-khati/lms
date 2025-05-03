@@ -8,7 +8,7 @@ const GenerateToken = (user, res) => {
     .status(201)
     .cookie("token", token, { httpOnly: true,sameSite:"strict" ,  maxAge: 1000 * 60 * 60 * 24 , path:"/"
     })
-    .json({ msg: "user logged in successfully" });
+    .json({ msg: "user logged in successfully" , user });
 };
 
 export default GenerateToken;

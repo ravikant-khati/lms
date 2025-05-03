@@ -25,45 +25,60 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogoutUserMutation } from "../features/apis/authAPI";
+import {
+  useLoadUserQuery,
+  useLogoutUserMutation,
+} from "../features/apis/authAPI";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const[logoutUser,{ data, error, isLoading, isSuccess, isError }] = useLogoutUserMutation()
-  const navigate = useNavigate()
-  useEffect(()=>{
-    if(isSuccess){
-      toast.success(data.msg)
-      navigate('/login')
+  const [logoutUser, { data, error, isLoading, isSuccess, isError }] =
+    useLogoutUserMutation();
+  const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.msg);
+      navigate("/login");
     }
-    if(isError){
-      toast.error("there is an error")
+    if (isError) {
+      toast.error("there is an error");
     }
-  },[isSuccess , isError])
-  let user = true;
+  }, [isSuccess, isError]);
   return (
     <div className="h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-gray-800 sticky top-0 left-0 right-0">
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center h-full">
-        <div className="flex items-center gap">
-          <School size={"30"} />
-          <h1 className="hidden md:block font-bold text-3xl">LMS</h1>
-        </div>
+        <Link to={"/"}>
+          <div className="flex items-center gap">
+            <School size={"30"} />
+            <h1 className="hidden md:block font-bold text-3xl">LMS</h1>
+          </div>
+        </Link>
         <div className="flex gap-6">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarImage
+                    src={user.profileUrl || "https://github.com/shadcn.png"}
+                  />
+                  <AvatarFallback>photo</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem><Link to='my-learning'>My Learning</Link></DropdownMenuItem>
-                  <DropdownMenuItem><Link to={"profile"}>Edit profile</Link></DropdownMenuItem>
-                  <DropdownMenuItem><button onClick={logoutUser}>Log Out</button></DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="my-learning">My Learning</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to={"profile"}>Edit profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <button onClick={logoutUser}>Log Out</button>
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
@@ -73,8 +88,8 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <div className="flex gap-1">
-              <Button variant="outline">Signup</Button>
-              <Button>Login</Button>
+              <Button variant="outline"><Link to={'/login'}>Signup</Link></Button>
+              <Button><Link to={'/login'}>Login</Link></Button>
             </div>
           )}
           <div>
@@ -102,13 +117,16 @@ export default Navbar;
 
 function Sheetdemo() {
   return (
-    <Sheet> 
+    <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline"><Menu /></Button>
+        <Button variant="outline">
+          <Menu />
+        </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle><h1>LMS</h1>
+          <SheetTitle>
+            <h1>LMS</h1>
           </SheetTitle>
         </SheetHeader>
         <div className="">
@@ -118,7 +136,7 @@ function Sheetdemo() {
           <div>Log Out</div>
           <div>Dashboard</div>
         </div>
-        
+
         <SheetFooter>
           <SheetClose asChild>
             <Button type="submit">Save changes</Button>
