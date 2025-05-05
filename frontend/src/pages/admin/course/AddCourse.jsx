@@ -15,12 +15,33 @@ import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-
+import { useCreateCourseMutation } from "../../../features/apis/courseAPI";
 const AddCourse = () => {
   const [courseTitle, setCourseTitle] = useState("");
   const [category, setCategory] = useState("");
+  const [createCourse, { data, isLoading, isSuccess, error , isError }] =
+    useCreateCourseMutation();
   const navigate = useNavigate();
 
+  const handleValueChange = (value) => {
+    setCategory(value);
+  };
+  const handleTitleChange = (e) => {
+    setCourseTitle(e.target.value);
+  };
+
+  const courseSubmit = async () => {
+    await createCourse({ courseTitle, category });
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('course created successfully')
+      navigate('/admin/course')
+    }
+    if(error || isError){
+      toast.error("can't create course")
+    }
+  }, [isSuccess , error , isError]);
   return (
     <div className="flex-1 mx-10">
       <div className="mb-4">
@@ -38,11 +59,14 @@ const AddCourse = () => {
           <Input
             type="text"
             placeholder="Your Course Name"
+            name="title"
+            value={courseTitle}
+            onChange={handleTitleChange}
           />
         </div>
         <div>
           <Label>Category</Label>
-          <Select >
+          <Select onValueChange={handleValueChange}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
@@ -70,11 +94,9 @@ const AddCourse = () => {
           </Select>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline">
-            Back
-          </Button>
-          <Button >
-            {false ? (
+          <Button variant="outline">Back</Button>
+          <Button disabled={isLoading} onClick={courseSubmit}>
+            {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait

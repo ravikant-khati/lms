@@ -22,6 +22,7 @@ import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import RichTextEditor from "../../../components/RichTextEditor";
 
 const CourseTab = () => {
   return (
@@ -37,7 +38,6 @@ const CourseTab = () => {
           <Button
             // disabled={courseByIdData?.course.lectures.length === 0}
             variant="outline"
-            
           >
             {true ? "Unpublished" : "Publish"}
           </Button>
@@ -64,13 +64,12 @@ const CourseTab = () => {
           </div>
           <div>
             <Label>Description</Label>
-            {/* <RichTextEditor  /> */}
+            <RichTextEditor/>
           </div>
           <div className="flex items-center gap-5">
             <div>
               <Label>Category</Label>
-              <Select
-              >
+              <Select>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
@@ -99,8 +98,7 @@ const CourseTab = () => {
             </div>
             <div>
               <Label>Course Level</Label>
-              <Select
-              >
+              <Select>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select a course level" />
                 </SelectTrigger>
@@ -126,23 +124,14 @@ const CourseTab = () => {
           </div>
           <div>
             <Label>Course Thumbnail</Label>
-            <Input
-              type="file"
-              accept="image/*"
-              className="w-fit"
-            />
-            {true && (
-              <img
-                className="e-64 my-2"
-                alt="Course Thumbnail"
-              />
-            )}
+            <Input type="file" accept="image/*" className="w-fit" />
+            {true && <img className="e-64 my-2" alt="Course Thumbnail" />}
           </div>
           <div>
             <Button onClick={() => navigate("/admin/course")} variant="outline">
               Cancel
             </Button>
-            <Button >
+            <Button>
               {false ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
