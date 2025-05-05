@@ -25,8 +25,21 @@ const courseAPIs = createApi({
       }),
       invalidatesTags: ["REFETCH_CREATOR_COURSE"],
     }),
+    editCourse:builder.mutation({
+        query:(inputData) =>({
+            url:`/edit/${inputData.courseID}`,
+            method:"PUT",
+            body:inputData.formData
+        })
+    }),
+    getCourse:builder.query({
+        query:(id)=>({
+            url:`/get-course/${id}`,
+            method:"GET",
+        })
+    })
   }),
 });
-export const { useCreateCourseMutation, useGetAllCoursesForAdminQuery } =
+export const { useCreateCourseMutation, useGetAllCoursesForAdminQuery , useEditCourseMutation , useGetCourseQuery } =
   courseAPIs;
 export { courseAPIs };

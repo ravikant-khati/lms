@@ -17,16 +17,13 @@ import { useGetAllCoursesForAdminQuery } from "../../../features/apis/courseAPI"
 
 const CourseTable = () => {
   const navigate = useNavigate();
-  const { isSuccess, data, isLoading, isError, refetch } =
+  const { isSuccess, data, isLoading, isError } =
     useGetAllCoursesForAdminQuery();
   useEffect(() => {
     if (isSuccess) {
       console.log(data);
     }
   }, [isSuccess, isError]);
-  useEffect(() => {
-    refetch();
-  }, []);
   if (isLoading) return <h1>Loading...</h1>;
   return (
     <div>
@@ -45,7 +42,7 @@ const CourseTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.courses.map((course) => (
+          {data.courses?.map((course) => (
             <TableRow>
               <TableCell className="font-medium">
                 {course?.coursePrice || "NA"}

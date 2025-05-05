@@ -1,11 +1,12 @@
 import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
-export default function RichTextEditor() {
+export default function RichTextEditor({inputValues , setInputValues}) {
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
-      console.log(editorRef.current.getContent());
+      const editValue = (editorRef.current.getContent());
+      setInputValues({...inputValues , description:editValue})
     }
   };
   return (
@@ -29,7 +30,7 @@ export default function RichTextEditor() {
           content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
         }}
       />
-      <button onClick={log}>Log editor content</button>
+      <button onClick={log}>save</button>
     </>
   );
 }
