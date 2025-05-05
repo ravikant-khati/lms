@@ -95,7 +95,7 @@ const updateProfile = async (req, res) => {
     user.username = name
     user.photoUrl = result.secure_url
     await user.save()
-    res.status(200).json({msg:"file replace successfully"})
+    res.status(200).json({msg:"file replaced successfully"})
     
    
   } catch (error) {
