@@ -52,23 +52,25 @@ const editCourse = async (req, res)=>{
       await cloudinary.uploader.destroy(publicId)
     }
     const result = await cloudinary.uploader.upload(file.path)
+    console.log("old course" , course)
     const updatedCourse = {
-      ...course , 
+      ...course.toObject() , 
       courseTitle,subTitle , description , courseLevel , coursePrice , category,courseThumbnail:result.secure_url,coursePrice
     }
+    console.log("edited course",updatedCourse)
     const updatedCourseFromBackend = await Course.findByIdAndUpdate(courseID ,updatedCourse , {new:true
 
     } )
     fs.unlinkSync(file.path)
-
-    res.status(200).json({msg:"course updated successfully" , updatedCourseFromBackend})
+    console.log("update course" , updatedCourseFromBackend);
+    res.status(200).json({msg:"course updated successfully"}, updatedCourseFromBackend)
   } catch (error) {
     console.log(error);
   }
 }
 const getCourse = async (req,res)=> {
   try {
-    const courseID = req.params;
+    const {courseID} = req.params;
     const course = await Course.findById(courseID)
     if(!course){
       return res.status(400).json({msg:"course not found"})
