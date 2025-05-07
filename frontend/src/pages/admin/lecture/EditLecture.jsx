@@ -2,13 +2,15 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
+import LectureTab from "./LectureTab";
 
 const EditLecture = () => {
+    const {courseID} = useParams()
   return (
     <div>
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
-          <Link>
+          <Link to={`/admin/course/edit/${courseID}/add-lecture`}>
             <Button size="icon" variant="outline" className="rounded-full">
               <ArrowLeft size={16} />
             </Button>
