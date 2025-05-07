@@ -1,20 +1,20 @@
 import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
-export default function RichTextEditor({inputValues , setInputValues}) {
+export default function RichTextEditor({inputValues, setInputValues}) {
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      const editValue = (editorRef.current.getContent());
-      setInputValues({...inputValues , description:editValue})
-    }
+
+  const handleEditorChange = (content, editor) => {
+    setInputValues({...inputValues, description: content});
   };
+
   return (
     <>
       <Editor
         apiKey='ttkwmx1mh7dpja018yo21f8k7zsykpm7nquhqgpcc6555no4'
         onInit={(_evt, editor) => editorRef.current = editor}
-        initialValue="<p>This is the initial content of the editor.</p>"
+        value={inputValues.description || ''}
+        onEditorChange={handleEditorChange}
         init={{
           height: 250,
           menubar: false,
@@ -30,7 +30,6 @@ export default function RichTextEditor({inputValues , setInputValues}) {
           content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
         }}
       />
-      <button onClick={log}>save</button>
     </>
   );
 }

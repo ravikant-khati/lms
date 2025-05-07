@@ -7,6 +7,7 @@ import {
 } from "../controllers/course.controller.js";
 import isAuthenticate from "../middlewares/isAuthenticated.js";
 import multer from "multer";
+import { createLecture, getCourseAllLectures } from "../controllers/lecture.controller.js";
 const upload = multer({
   dest: "uploads/",
   limits: {
@@ -25,5 +26,7 @@ courseRouter.put(
   editCourse
 );
 courseRouter.get("/get-course/:courseID", isAuthenticate, getCourse);
+courseRouter.get('/:courseID/get-all-lectures' , isAuthenticate , getCourseAllLectures)
+courseRouter.post("/:courseID/create-lecture" , isAuthenticate , createLecture)
 
 export default courseRouter;

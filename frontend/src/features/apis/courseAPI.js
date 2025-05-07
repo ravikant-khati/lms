@@ -23,21 +23,22 @@ const courseAPIs = createApi({
         url: "all-courses",
         method: "GET",
       }),
-      invalidatesTags: ["REFETCH_CREATOR_COURSE"],
+      providesTags: ["REFETCH_CREATOR_COURSE"],
     }),
     editCourse:builder.mutation({
         query:(inputData) =>({
             url:`/edit/${inputData.courseID}`,
             method:"PUT",
             body:inputData.formData
-        })
+        }),
+        invalidatesTags: ["REFETCH_CREATOR_COURSE"],
     }),
     getCourse:builder.query({
         query:(id)=>({
             url:`/get-course/${id}`,
             method:"GET",
         })
-    })
+    }),
   }),
 });
 export const { useCreateCourseMutation, useGetAllCoursesForAdminQuery , useEditCourseMutation , useGetCourseQuery } =
