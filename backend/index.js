@@ -5,7 +5,7 @@ import userRouter from './routes/user.routes.js'
 import cookieParser from 'cookie-parser'
 import cors from "cors"
 import courseRouter from './routes/course.routes.js'
-import lectureRouter from './routes/lecture.routes.js'
+import mediaRouter from './routes/media.route.js'
 
 dotenv.config()
 const PORT = process.env.PORT || 8080
@@ -23,7 +23,7 @@ app.use(cors({
 
 app.use('/user' , userRouter)
 app.use('/course' , courseRouter)
-app.use('/lecture' , lectureRouter)
+app.use('/media' , mediaRouter)
 
 
 app.listen(PORT , ()=>{
