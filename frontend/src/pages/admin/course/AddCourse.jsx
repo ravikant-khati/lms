@@ -94,7 +94,7 @@ const AddCourse = () => {
           </Select>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline">Back</Button>
+          <Button variant="outline" onClick={()=>navigate("/admin/course")}>Back</Button>
           <Button disabled={isLoading} onClick={courseSubmit}>
             {isLoading ? (
               <>
