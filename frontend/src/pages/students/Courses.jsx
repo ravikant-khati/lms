@@ -1,10 +1,16 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 import Course from "./Course";
+import { useGetAllPublishedCoursesQuery } from "../../features/apis/courseAPI";
+import { useEffect } from "react";
 
 const Courses = () => {
-    let isError = false;
-    let isLoading = false
+  const {data , isLoading , isError , isSuccess} = useGetAllPublishedCoursesQuery()
+  useEffect(()=>{
+if(isSuccess){
+  console.log(data.courses);
+}
+  },[isSuccess])
   if (isError) return <h1>Some error occurred while fetching courses.</h1>;
 
   return (
@@ -16,8 +22,8 @@ const Courses = () => {
             ? Array.from({ length: 8 }).map((_, index) => (
                 <CourseSkeleton key={index} />
               ))
-            : [1,2,3,4,5,6].map((course, index) => (
-                <Course key={index}/>
+            : data.courses.map((course, index) => (
+                <Course key={index} course={course}/>
               ))}
         </div>
       </div>

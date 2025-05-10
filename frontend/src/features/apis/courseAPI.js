@@ -39,6 +39,12 @@ const courseAPIs = createApi({
         method: "GET",
       }),
     }),
+    getAllPublishedCourses: builder.query({
+      query: () => ({
+        url: "/get-published-courses",
+        method: "GET",
+      }),
+    }),
     togglePublishUnpublish: builder.mutation({
       query: (id) => ({
         url: `/${id}/toggle-publish`,
@@ -53,6 +59,7 @@ export const {
   useGetAllCoursesForAdminQuery,
   useEditCourseMutation,
   useGetCourseQuery,
-  useTogglePublishUnpublishMutation
+  useTogglePublishUnpublishMutation,
+  useGetAllPublishedCoursesQuery
 } = courseAPIs;
 export { courseAPIs };
