@@ -54,14 +54,14 @@ const editCourse = async (req, res) => {
     if (!course) {
       return res.status(400).json({ msg: "course not found" });
     }
-    let courseThumbnail= course.courseThumbnail;
+    let courseThumbnail = course.courseThumbnail;
     if (req.file) {
       if (course.courseThumbnail) {
         const publicId = course.courseThumbnail.split("/").pop().split(".")[0];
         await cloudinary.uploader.destroy(publicId);
       }
-      const result =(await cloudinary.uploader.upload(file.path));
-      courseThumbnail = result.secure_url
+      const result = await cloudinary.uploader.upload(file.path);
+      courseThumbnail = result.secure_url;
     }
     console.log("old course", course);
     const updatedCourse = {
@@ -86,6 +86,9 @@ const editCourse = async (req, res) => {
       .json({ msg: "course updated successfully" }, updatedCourseFromBackend);
   } catch (error) {
     console.log(error);
+    return res
+      .status(500)
+      .json({ msg: "internal server error. please try again later" });
   }
 };
 const getCourse = async (req, res) => {
@@ -102,4 +105,22 @@ const getCourse = async (req, res) => {
       .json({ msg: "internal server error. please try again later" });
   }
 };
-export { getAllCoursesForAdmin, createCourse, editCourse, getCourse };
+
+const publishUnpublishCourse = async (req ,res)=>{
+  try {
+    const {courseID} = req.params;
+    const course =  await Course.findById(courseID)
+    if(!course){
+      return res.status(400).json({msg:"course not found"})
+    }
+    course.isPublished = !course.isPublished
+    await course.save()
+    return res.status(200).json({msg:`course ${course.isPublished==true?'published':"unpublished"} successfully`})
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ msg: "internal server error. please try again later" });
+  }
+}
+export { getAllCoursesForAdmin, createCourse, editCourse, getCourse , publishUnpublishCourse };

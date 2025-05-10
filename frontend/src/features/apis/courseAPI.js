@@ -25,22 +25,34 @@ const courseAPIs = createApi({
       }),
       providesTags: ["REFETCH_CREATOR_COURSE"],
     }),
-    editCourse:builder.mutation({
-        query:(inputData) =>({
-            url:`/edit/${inputData.courseID}`,
-            method:"PUT",
-            body:inputData.formData
-        }),
-        invalidatesTags: ["REFETCH_CREATOR_COURSE"],
+    editCourse: builder.mutation({
+      query: (inputData) => ({
+        url: `/edit/${inputData.courseID}`,
+        method: "PUT",
+        body: inputData.formData,
+      }),
+      invalidatesTags: ["REFETCH_CREATOR_COURSE"],
     }),
-    getCourse:builder.query({
-        query:(id)=>({
-            url:`/get-course/${id}`,
-            method:"GET",
-        })
+    getCourse: builder.query({
+      query: (id) => ({
+        url: `/get-course/${id}`,
+        method: "GET",
+      }),
+    }),
+    togglePublishUnpublish: builder.mutation({
+      query: (id) => ({
+        url: `/${id}/toggle-publish`,
+        method: "PATCH",
+      }),
+      invalidatesTags:['REFETCH_CREATOR_COURSE']
     }),
   }),
 });
-export const { useCreateCourseMutation, useGetAllCoursesForAdminQuery , useEditCourseMutation , useGetCourseQuery } =
-  courseAPIs;
+export const {
+  useCreateCourseMutation,
+  useGetAllCoursesForAdminQuery,
+  useEditCourseMutation,
+  useGetCourseQuery,
+  useTogglePublishUnpublishMutation
+} = courseAPIs;
 export { courseAPIs };

@@ -1,4 +1,3 @@
-// import RichTextEditor from "@/components/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,11 +25,12 @@ import RichTextEditor from "../../../components/RichTextEditor";
 import {
   useEditCourseMutation,
   useGetCourseQuery,
+  useTogglePublishUnpublishMutation,
 } from "../../../features/apis/courseAPI";
 
 const CourseTab = () => {
-  const [editCourse, { data, isLoading, isError, isSuccess }] =
-    useEditCourseMutation();
+  const { courseID } = useParams();
+  const navigate = useNavigate();
   const [inputValues, setInputValues] = useState({
     courseTitle: "",
     subTitle: "",
@@ -41,10 +41,28 @@ const CourseTab = () => {
     category: "",
   });
   const [previewThumbnail, setPreviewThumbnail] = useState("");
-  const { courseID } = useParams();
+  const [publish , setPublish] = useState(false)
+
+  //todo: rtk query and mutation
+
   const { data: singleCourseData, isLoading: singleCourseIsLoading } =
     useGetCourseQuery(courseID);
-  const navigate = useNavigate();
+
+  const [editCourse, { data, isLoading, isError, isSuccess }] =
+    useEditCourseMutation();
+
+  const [
+    toggle,
+    {
+      data: toggleData,
+      isLoading: toggleIsLoading,
+      isSuccess: toggleIsSuccess,
+      isError: toggleIsError,
+    },
+  ] = useTogglePublishUnpublishMutation();
+
+  //todo: rtk query and mutation
+
   const handleInuptValuesChange = (e) => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
@@ -63,7 +81,7 @@ const CourseTab = () => {
     };
     fileReader.readAsDataURL(e.target.files[0]);
   }
-  const handleEditCourseSubmit = async () => {
+  async function handleEditCourseSubmit() {
     const formData = new FormData();
     formData.append("courseTitle", inputValues.courseTitle);
     formData.append("subTitle", inputValues.subTitle);
@@ -73,7 +91,10 @@ const CourseTab = () => {
     formData.append("courseThumbnail", inputValues.courseThumbnail);
     formData.append("category", inputValues.category);
     await editCourse({ formData, courseID });
-  };
+  }
+  async function handlePublishUnpublish() {
+    await toggle(courseID);
+  }
   useEffect(() => {
     if (isSuccess) {
       toast.success("course edited successfully in backend");
@@ -86,12 +107,23 @@ const CourseTab = () => {
   useEffect(() => {
     if (singleCourseData) {
       setInputValues(singleCourseData.course);
+      setPublish(singleCourseData.course.isPublished)
     }
   }, [singleCourseData]);
   useEffect(() => {
-    console.log("final",inputValues);
+    console.log("final", inputValues);
   }, [inputValues]);
-  if(singleCourseIsLoading) return <h1 className="text-center font-bold , size-8">loading</h1>
+  useEffect(() => {
+    if (toggleIsSuccess) {
+      toast.success(toggleData.msg);
+      setPublish(!publish)
+    }
+    if (toggleIsError) {
+      toast.error(toggleData.msg);
+    }
+  }, [toggleIsSuccess, toggleIsError]);
+  if (singleCourseIsLoading)
+    return <h1 className="text-center font-bold , size-8">loading</h1>;
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -103,10 +135,11 @@ const CourseTab = () => {
         </div>
         <div className="space-x-2">
           <Button
-            // disabled={courseByIdData?.course.lectures.length === 0}
+            disabled={toggleIsLoading || singleCourseData.course.lectures.length===0}
             variant="outline"
+            onClick={handlePublishUnpublish}
           >
-            {true ? "Unpublished" : "Publish"}
+            {publish ? "Unpublish" : "Publish"}
           </Button>
           <Button>Remove Course</Button>
         </div>
