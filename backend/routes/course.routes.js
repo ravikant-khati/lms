@@ -3,6 +3,7 @@ import {
   createCourse,
   editCourse,
   getAllCoursesForAdmin,
+  getAllPublishedCourses,
   getCourse,
   publishUnpublishCourse,
 } from "../controllers/course.controller.js";
@@ -28,6 +29,7 @@ courseRouter.put(
 );
 courseRouter.get("/get-course/:courseID", isAuthenticate, getCourse);
 courseRouter.patch('/:courseID/toggle-publish/' ,isAuthenticate , publishUnpublishCourse)
+courseRouter.get('/get-published-courses' , isAuthenticate, getAllPublishedCourses)
 
 //!--lecture related routes
 courseRouter.get('/:courseID/get-all-lectures' , isAuthenticate , getCourseAllLectures)

@@ -1,6 +1,7 @@
 import Course from "../models/course.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs";
+import User from "../models/user.model.js";
 
 const getAllCoursesForAdmin = async (req, res) => {
   try {
@@ -123,4 +124,23 @@ const publishUnpublishCourse = async (req ,res)=>{
       .json({ msg: "internal server error. please try again later" });
   }
 }
-export { getAllCoursesForAdmin, createCourse, editCourse, getCourse , publishUnpublishCourse };
+
+const getAllPublishedCourses = async (req,res)=>{
+  try {
+    const courses = await Course.find({isPublished:true})
+   .populate({
+      path: "creator",
+      select: "username photoUrl"
+    });
+    if(!courses || courses.length===0){
+      return res.status(400).json({msg:"no published courses found"})
+    }
+    return res.status(200).json({msg:"published courses found" , courses})
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ msg: "internal server error. please try again later" });
+  }
+}
+export { getAllCoursesForAdmin, createCourse, editCourse, getCourse , publishUnpublishCourse  , getAllPublishedCourses};
