@@ -8,11 +8,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import BuyCourseButton from "../../components/BuyCourseButton";
 
 import { BadgeInfo, Lock, PlayCircle } from "lucide-react";
 import ReactPlayer from "react-player";
+import { useParams } from "react-router-dom";
 
 const CourseDetail = () => {
+  const {courseID} = useParams()
   return (
     <div className="space-y-5">
       <div className="bg-[#2D2F31] text-white">
@@ -72,7 +75,11 @@ const CourseDetail = () => {
               <h1 className="text-lg md:text-xl font-semibold">Course Price</h1>
             </CardContent>
             <CardFooter className="flex justify-center p-4">
-              buy
+              {false ? (
+                <Button onClick={handleContinueCourse} className="w-full">Continue Course</Button>
+              ) : (
+                <BuyCourseButton courseID={courseID} />
+              )}
             </CardFooter>
           </Card>
         </div>
