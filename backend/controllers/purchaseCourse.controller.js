@@ -127,7 +127,10 @@ const getCourseDetailWithPurchaseStatus = async (req, res) => {
       return res.status(400).json({ msg: "course not found" });
     }
     const purchasedCourse = await PurchasedCourse.findOne({ userID, courseID });
-    return res.end();
+    return res.status(200).json({
+      course,
+      purchaseStatus:!!purchasedCourse
+    });
   } catch (error) {
     console.log(error);
     return res

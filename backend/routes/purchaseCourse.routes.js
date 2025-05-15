@@ -6,5 +6,4 @@ purchaseCourseRouter.post("/checkout/create-checkout-session" , isAuthenticate ,
 purchaseCourseRouter.post('/webhook' , express.raw({type:"application/json"}),stripeWebhook)
 purchaseCourseRouter.get('/course/:courseID/detail-with-status'  ,isAuthenticate , getCourseDetailWithPurchaseStatus)
 purchaseCourseRouter.get("/" , isAuthenticate , getAllPurchasedCourse)
-
 export default purchaseCourseRouter;
