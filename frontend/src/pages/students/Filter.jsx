@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const categories = [
   { id: "nextjs", label: "Next JS" },
@@ -26,21 +26,34 @@ const categories = [
   { id: "html", label: "HTML" },
 ];
 
-const Filter = ({ handleFilterChange }) => {
+const Filter = ({
+  selectedCategories,
+  setSelectedCategories,
+  sortByPrice,
+  setSortByPrice,
+}) => {
+  const handleCategoryChange = (value) => {
+    if (selectedCategories.includes(value)) {
+      const updatedC = selectedCategories.filter((ele) => ele !== value);
+      setSelectedCategories(updatedC);
+    } else {
+      setSelectedCategories([...selectedCategories, value]);
+    }
+  };
 
   return (
     <div className="w-full md:w-[20%]">
       <div className="flex items-center justify-between">
         <h1 className="font-semibold text-lg md:text-xl">Filter Options</h1>
-        <Select>
+        <Select onValueChange={(value) => setSortByPrice(value)}>
           <SelectTrigger>
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Sort by price</SelectLabel>
-              <SelectItem value="low">Low to High</SelectItem>
-              <SelectItem value="high">High to Low</SelectItem>
+              <SelectItem value="low to high">Low to High</SelectItem>
+              <SelectItem value="high to low">High to Low</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -51,9 +64,14 @@ const Filter = ({ handleFilterChange }) => {
         {categories.map((category) => (
           <div className="flex items-center space-x-2 my-2">
             <Checkbox
+              className="cursor-pointer"
               id={category.id}
+              onCheckedChange={() => handleCategoryChange(category.id)}
             />
-            <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            <Label
+              className="text-sm font-medium leading-none cursor-pointer"
+              for={category.id}
+            >
               {category.label}
             </Label>
           </div>

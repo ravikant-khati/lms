@@ -52,6 +52,24 @@ const courseAPIs = createApi({
       }),
       invalidatesTags:['REFETCH_CREATOR_COURSE']
     }),
+    getCoursesByQuery:builder.query({
+      query:({searchQuery , selectedCategories ,sortByPrice})=>{
+
+        let queryString = `/query?query=${encodeURIComponent(searchQuery)}`
+
+        if(selectedCategories && selectedCategories.length > 0 ){
+          const categoriesString = selectedCategories.map(encodeURIComponent).join(',')
+          queryString += `&category=${categoriesString}`
+        }
+        if(sortByPrice){
+          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`
+        }
+        return {
+          url:queryString,
+          method:"GET",
+        }
+      }
+    })
   }),
 });
 export const {
@@ -60,6 +78,7 @@ export const {
   useEditCourseMutation,
   useGetCourseQuery,
   useTogglePublishUnpublishMutation,
-  useGetAllPublishedCoursesQuery
+  useGetAllPublishedCoursesQuery,
+  useGetCoursesByQueryQuery
 } = courseAPIs;
 export { courseAPIs };
