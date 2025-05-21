@@ -5,6 +5,7 @@ import {
   getAllCoursesForAdmin,
   getAllPublishedCourses,
   getCourse,
+  getCoursesByQuery,
   publishUnpublishCourse,
 } from "../controllers/course.controller.js";
 import isAuthenticate from "../middlewares/isAuthenticated.js";
@@ -30,7 +31,7 @@ courseRouter.put(
 courseRouter.get("/get-course/:courseID", isAuthenticate, getCourse);
 courseRouter.patch('/:courseID/toggle-publish/' ,isAuthenticate , publishUnpublishCourse)
 courseRouter.get('/get-published-courses' , isAuthenticate, getAllPublishedCourses)
-
+courseRouter.get('/query' , isAuthenticate , getCoursesByQuery)
 //!--lecture related routes
 courseRouter.get('/:courseID/get-all-lectures' , isAuthenticate , getCourseAllLectures)
 courseRouter.get("/get-lecture/:lectureID" , isAuthenticate , getLecture)

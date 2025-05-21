@@ -142,7 +142,7 @@ const getCourseDetailWithPurchaseStatus = async (req, res) => {
 const getAllPurchasedCourse = async (req, res) => {
   try {
     const purchasedCourse = await PurchasedCourse.find({
-      status: "Complete",
+      status: "Completed",
     }).populate({ path: "courseID" });
     if (!purchasedCourse || purchasedCourse.length == 0) {
       return res.status(400).json({ msg: "course not found" });
