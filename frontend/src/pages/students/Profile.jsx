@@ -48,6 +48,7 @@ const Profile = () => {
     
   };
   if (isLoading) return <h1>Profile Loading...</h1>;
+  console.log(data);
   return (
     <div className="max-w-4xl mx-auto px-4 my-10">
       <h1 className="font-bold text-2xl text-center md:text-left">PROFILE</h1>
