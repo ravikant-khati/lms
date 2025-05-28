@@ -22,7 +22,7 @@ const CourseDetail = () => {
   const {data:res, isSuccess , isLoading , isError} = useGetCourseDetailWithStatusQuery(courseID)
   useEffect(()=>{
     if(isSuccess){
-      console.log(res);
+      // console.log(res);
     }
   },[isSuccess , isError])
   if(isLoading) return <h1 className="mt-20">Loading... please wait</h1>

@@ -15,6 +15,12 @@ import EditLecture from "./pages/admin/lecture/EditLecture";
 import CourseDetail from "./pages/students/CourseDetail";
 import CourseProgress from "./pages/students/CourseProgress";
 import SearchPage from "./pages/students/SearchPage";
+import {
+  AlreadyLoggedInForAuthenticationPage,
+  ProtectedRouteForAdmin,
+  ProtectedRouteForLoggedInUser,
+  ProtectedRouteForPurchasedCourse,
+} from "./components/ProtectedRoutes.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -32,55 +38,81 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "login",
-        element: <Login />,
+        element: (
+          <AlreadyLoggedInForAuthenticationPage>
+            <Login />
+          </AlreadyLoggedInForAuthenticationPage>
+        ),
       },
       {
         path: "my-learning",
-        element: <MyLearning />,
+        element: (
+          <ProtectedRouteForLoggedInUser>
+            <MyLearning />
+          </ProtectedRouteForLoggedInUser>
+        ),
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <ProtectedRouteForLoggedInUser>
+            <Profile />
+          </ProtectedRouteForLoggedInUser>
+        ),
       },
       {
-        path:"course-detail/:courseID",
-        element:<CourseDetail />
+        path: "course-detail/:courseID",
+        element: (
+          <ProtectedRouteForLoggedInUser>
+            <CourseDetail />
+          </ProtectedRouteForLoggedInUser>
+        ),
       },
       {
-        path:"course-progress/:courseID",
-        element:<CourseProgress />
+        path: "course-progress/:courseID",
+        element: (
+          <ProtectedRouteForLoggedInUser>
+            <ProtectedRouteForPurchasedCourse>
+              <CourseProgress />
+            </ProtectedRouteForPurchasedCourse>
+          </ProtectedRouteForLoggedInUser>
+        ),
       },
       {
-        path:"course-search",
-        element:<SearchPage />
+        path: "course-search",
+        element: <SearchPage />,
       },
       {
         path: "admin",
-        element: <Sidebar />,
+        element: (
+          <ProtectedRouteForAdmin>
+            <Sidebar />
+          </ProtectedRouteForAdmin>
+        ),
         children: [
           {
             path: "",
             element: <Dashboard />,
           },
           {
-            path:'course',
-            element: <CourseTable />
+            path: "course",
+            element: <CourseTable />,
           },
           {
-            path:"course/add-course",
-            element:<AddCourse />
+            path: "course/add-course",
+            element: <AddCourse />,
           },
           {
-            path:"course/edit/:courseID",
-            element:<EditCourse />
+            path: "course/edit/:courseID",
+            element: <EditCourse />,
           },
           {
-            path:"course/edit/:courseID/add-lecture",
-            element:<CreateLecture />
+            path: "course/edit/:courseID/add-lecture",
+            element: <CreateLecture />,
           },
           {
-            path:"course/edit/:courseID/edit-lecture/:lectureID",
-            element:<EditLecture />
+            path: "course/edit/:courseID/edit-lecture/:lectureID",
+            element: <EditLecture />,
           },
         ],
       },

@@ -31,17 +31,17 @@ const CourseProgress = () => {
     updateCourseProgress({ courseID, lectureID: currentLecture._id });
   };
   const handleIsViewed = (id) => {
-    return data.courseProgress.lectureProgress.some(
+    return data.courseProgress?.lectureProgress?.some(
       (lec) => lec.lectureID === id && lec.viewed === true
     );
   };
   const checkForCompletion = ({ courseDetails, courseProgress }) => {
-    const attendedLecture = courseProgress.lectureProgress.filter(
+    const attendedLecture = courseProgress?.lectureProgress?.filter(
       (lec) => lec.viewed === true
     );
     console.log( "attended",attendedLecture);
     console.log("all",courseDetails.lectures);
-    setAreAllLecturesViewed( attendedLecture.length === courseDetails.lectures.length
+    setAreAllLecturesViewed( attendedLecture?.length === courseDetails?.lectures?.length
       ? true
       : false)
   };
