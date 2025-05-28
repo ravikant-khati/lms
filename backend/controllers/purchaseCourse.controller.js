@@ -10,7 +10,7 @@ const createCheckoutSession = async (req, res) => {
   try {
     const userID = req.userId;
     const { courseID } = req.body;
-    console.log(userID , courseID);
+    console.log(userID, courseID);
     const course = await Course.findById(courseID);
     if (!course) return res.status(400).json({ msg: "course not  found" });
     const newPurchase = new PurchasedCourse({
@@ -48,8 +48,18 @@ const createCheckoutSession = async (req, res) => {
         .json({ msg: "error while creating stripe session" });
     }
     newPurchase.paymentID = session.id;
+    newPurchase.status = "Completed";
     await newPurchase.save();
-
+    await User.findByIdAndUpdate(
+      newPurchase.userID,
+      { $addToSet: { enrolledCourses: newPurchase.courseID._id } },
+      { new: true }
+    );
+    await Course.findByIdAndUpdate(
+      newPurchase.courseID,
+      { $addToSet: { enrolledStudents: newPurchase.userID } },
+      { new: true }
+    );
     return res
       .status(200)
       .json({ msg: "session created successfully", url: session.url });
@@ -129,7 +139,7 @@ const getCourseDetailWithPurchaseStatus = async (req, res) => {
     const purchasedCourse = await PurchasedCourse.findOne({ userID, courseID });
     return res.status(200).json({
       course,
-      purchaseStatus:!!purchasedCourse
+      purchaseStatus: !!purchasedCourse,
     });
   } catch (error) {
     console.log(error);

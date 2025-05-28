@@ -30,8 +30,8 @@ courseRouter.put(
 );
 courseRouter.get("/get-course/:courseID", isAuthenticate, getCourse);
 courseRouter.patch('/:courseID/toggle-publish/' ,isAuthenticate , publishUnpublishCourse)
-courseRouter.get('/get-published-courses' , isAuthenticate, getAllPublishedCourses)
-courseRouter.get('/query' , isAuthenticate , getCoursesByQuery)
+courseRouter.get('/get-published-courses', getAllPublishedCourses)
+courseRouter.get('/query', getCoursesByQuery)
 //!--lecture related routes
 courseRouter.get('/:courseID/get-all-lectures' , isAuthenticate , getCourseAllLectures)
 courseRouter.get("/get-lecture/:lectureID" , isAuthenticate , getLecture)
