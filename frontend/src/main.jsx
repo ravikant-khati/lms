@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { appStore } from "./app/store.js";
 import { Toaster } from "@/components/ui/sonner";
 import { useLoadUserQuery } from "./features/apis/authAPI.js";
+import { ThemeProvider } from "./components/theme-provider.jsx";
 
 const Loader = ({ children }) => {
   const { isLoading } = useLoadUserQuery();
@@ -15,10 +16,10 @@ const Loader = ({ children }) => {
 createRoot(document.getElementById("root")).render(
   <Provider store={appStore}>
     <Loader>
-      <>
+      <ThemeProvider defaultTheme="light"> 
         <App />
         <Toaster />
-      </>
+      </ThemeProvider>
     </Loader>
   </Provider>
 );
