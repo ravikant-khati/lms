@@ -21,7 +21,7 @@ import {
   ProtectedRouteForLoggedInUser,
   ProtectedRouteForPurchasedCourse,
 } from "./components/ProtectedRoutes.jsx";
-
+import { ThemeProvider } from "./components/theme-provider.jsx";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -122,8 +122,10 @@ const appRouter = createBrowserRouter([
 
 function App() {
   return (
-    <main>
+     <main>
+      <ThemeProvider>
       <RouterProvider router={appRouter} />
+      </ThemeProvider>
     </main>
   );
 }

@@ -4,22 +4,22 @@ import "./index.css";
 import App from "./App.jsx";
 import { Provider } from "react-redux";
 import { appStore } from "./app/store.js";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "./components/ui/sonner";
 import { useLoadUserQuery } from "./features/apis/authAPI.js";
-import { ThemeProvider } from "./components/theme-provider.jsx";
+import LoadingSpinner from "./components/LoadingSpinner";
 
-const Loader = ({ children }) => {
+const Custom = ({ children }) => {
   const { isLoading } = useLoadUserQuery();
-  return <>{isLoading ? <h1 className="text-center h-full font-bold text-5xl">loading</h1> : children }</>;
+  return <>{isLoading ? <LoadingSpinner/> : <>{children}</>}</>;
 };
 
 createRoot(document.getElementById("root")).render(
-  <Provider store={appStore}>
-    <Loader>
-      <ThemeProvider defaultTheme="light"> 
+  <StrictMode>
+    <Provider store={appStore}>
+      <Custom>
         <App />
         <Toaster />
-      </ThemeProvider>
-    </Loader>
-  </Provider>
+      </Custom>
+    </Provider>
+  </StrictMode>
 );

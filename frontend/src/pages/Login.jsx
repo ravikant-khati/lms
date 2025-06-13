@@ -39,14 +39,6 @@ export function Login() {
       isSuccess: registerIsSuccess,
     },
   ] = useRegisterUserMutation();
-  useEffect(() => {
-    if(registerError){
-      toast.error('signup failed')
-    }
-    if(registerIsSuccess){
-      toast.success('signup success')
-    }
-  }, [registerIsSuccess , registerError]);
   const [
     loginUser,
     {
@@ -56,15 +48,6 @@ export function Login() {
       isSuccess: loginIsSuccess,
     },
   ] = useLoginUserMutation();
-  useEffect(() => {
-    if(loginError){
-      toast.error('login failed')
-    }
-    if(loginIsSuccess){
-      toast.success('login success')
-      navigate('/')
-    }
-  }, [loginIsSuccess , loginError]);
   const handleSignupFieldsChange = (e) => {
     setSignupValues({
       ...signupValues,
@@ -78,11 +61,43 @@ export function Login() {
     });
   };
   const signup = async () => {
-    await registerUser(signupValues);
+    try {
+      await registerUser(signupValues).unwrap();
+      toast.success("signed up")
+      
+    } catch (error) {
+      toast.error("signup failed")
+    }
   };
   const login = async () => {
-    await loginUser(loginValues);
+    try {
+    await loginUser(loginValues).unwrap();
+    toast.success('logged in');
+  } catch (error) {
+    toast.error('login failed');
+  }
   };
+  // useEffect(() => {
+  //   if(registerError){
+  //     toast.error('signup failed')
+  //   }
+  //   if(registerIsSuccess){
+  //     toast.success('signup success')
+  //   }
+  // }, [registerIsSuccess , registerError]);
+  // useEffect(() => {
+  //   if(loginError){
+  //     toast.error('login failed')
+  //   }
+  //   if(loginIsSuccess){
+  //     toast.success('logged in')
+  //     console.log('user is logged in rr');
+  //     navigate('/')
+  //   }
+  // }, [loginIsSuccess , loginError]);
+
+  //! useEffect will not run after successful login because Queryfullfilled will update the global auth state and protected route's navigate  will unmount the compoente before useeffect run and redirect us to home page.
+  //! if we use toast in function:>>in callstack first toast will run then protected routes navigate will run.
   return (
     <div className="flex justify-center mt-20">
       <Tabs defaultValue="signup" className="w-[400px]">
