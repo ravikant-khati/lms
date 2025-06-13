@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const COURSE_PURCHASE_API = "http://localhost:8080/purchase";
+// const COURSE_PURCHASE_API = "http://localhost:8080/purchase";
+const dmn = import.meta.env.MODE === 'development' ? 'http://localhost:8080':""
+const COURSE_PURCHASE_API = `${dmn}/purchase`;
 
 export const purchaseAPIs = createApi({
   reducerPath: "purchaseAPIs",

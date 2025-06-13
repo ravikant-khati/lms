@@ -8,10 +8,11 @@ import courseRouter from './routes/course.routes.js'
 import mediaRouter from './routes/media.route.js'
 import purchaseCourseRouter from './routes/purchaseCourse.routes.js'
 import courseProgressRouter from './routes/courseProgress.routes.js'
-
+import path from 'path';
 dotenv.config()
 const PORT = process.env.PORT || 8080
 const app = express()
+const __dirname = path.resolve()
 
 
 //! default middlewares
@@ -28,6 +29,15 @@ app.use('/course' , courseRouter)
 app.use('/media' , mediaRouter)
 app.use("/purchase" , purchaseCourseRouter)
 app.use("/progress" , courseProgressRouter)
+
+if(process.env.NODE_ENV == 'production'){
+    app.use(express.static(path.join(__dirname , '../frontend/dist')))
+
+    app.get("/*splat" , (req,res)=>{
+        res.sendFile(path.join(__dirname , '../frontend' , 'dist' , 'index.html'
+        ))
+    })
+}
 
 
 app.listen(PORT , ()=>{

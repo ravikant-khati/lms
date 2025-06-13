@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { userLoggedIn, userLoggedOut } from "../authSlice";
 
-const baseURL = "http://localhost:8080/user";
+// const baseURL = "http://localhost:8080/user";
+const dmn = import.meta.env.MODE === 'development' ? 'http://localhost:8080':""
+const baseURL = `${dmn}/user`;
 
 const authAPIs = createApi({
   reducerPath: "authAPIs",

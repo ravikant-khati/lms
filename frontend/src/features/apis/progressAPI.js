@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseURL = "http://localhost:8080/progress";
+// const baseURL = "http://localhost:8080/progress";
+const dmn = import.meta.env.MODE === 'development' ? 'http://localhost:8080':""
+const baseURL = `${dmn}/progress`;
 
 const progressAPIs = createApi({
   reducerPath: "progressAPIs",
